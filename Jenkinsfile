@@ -30,11 +30,8 @@ pipeline {
             steps {
                 script {
                     // Start Flask app (in the background) and wait for it to start
-                    sh '''
-                        source venv/bin/activate
-                        python app.py &
-                        sleep 10
-                    '''
+                    sh 'source venv/bin/activate && nohup python app.py > /dev/null 2>&1 &'
+                    sleep 10
                 }
             }
         }
