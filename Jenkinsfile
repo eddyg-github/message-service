@@ -11,6 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Create and activate a virtual environment
                     sh 'python -m venv venv'
                     sh 'source venv/bin/activate && pip install -r requirements.txt'
                 }
@@ -28,8 +29,8 @@ pipeline {
         stage('Run Flask App') {
             steps {
                 script {
+                    // Start Flask app (in the background) and wait for it to start
                     sh 'source venv/bin/activate && python app.py &'
-                    // Use `sleep` to give time for the server to start
                     sleep 10
                 }
             }
