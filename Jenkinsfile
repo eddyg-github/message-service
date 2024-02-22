@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                script { 
+                script {
                     // Create and activate a virtual environment
                     sh 'python -m venv venv'
                     sh 'source venv/bin/activate && pip install -r requirements.txt'
