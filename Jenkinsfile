@@ -4,49 +4,55 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // Paso para checkout del repositorio
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
+                // Aquí coloca los pasos para compilar tu proyecto
                 script {
-                    // Create and activate a virtual environment
-                    sh 'python -m venv venv'
-                    sh 'source venv/bin/activate && pip install -r requirements.txt'
+                    // Por ejemplo:
+                    sh 'mvn clean install'
                 }
             }
         }
 
         stage('Test') {
             steps {
+                // Aquí coloca los pasos para ejecutar pruebas
                 script {
-                    // Add any testing commands if needed
+                    // Por ejemplo:
+                    sh 'mvn test'
                 }
             }
         }
 
-        stage('Run Flask App') {
+        stage('Deploy') {
             steps {
+                // Aquí coloca los pasos para implementar tu aplicación
                 script {
-                    // Start Flask app (in the background) and wait for it to start
-                    sh '''
-                        source venv/bin/activate
-                        nohup python app.py > /dev/null 2>&1 &
-                        sleep 10
-                    '''
+                    // Por ejemplo:
+                    sh 'deploy-script.sh'
                 }
             }
         }
     }
 
     post {
-        always {
-            script {
-                // Clean up
-                sh 'killall python || true'
-                sh 'deactivate || true'
-            }
+        success {
+            // Acciones a realizar si la construcción es exitosa
+            echo 'Build successful!'
+
+            // Puedes agregar más pasos o acciones aquí
+        }
+
+        failure {
+            // Acciones a realizar si la construcción falla
+            echo 'Build failed!'
+
+            // Puedes agregar más pasos o acciones aquí
         }
     }
 }
